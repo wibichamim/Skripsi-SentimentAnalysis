@@ -1,0 +1,65 @@
+<?php
+
+    include 'koneksi.php';
+
+
+$query_dok = mysqli_query($koneksi,"SELECT
+`tweet_preprocessing` FROM
+data_train_tes ORDER BY `id_training`");
+
+
+while ($row_dok =  mysqli_fetch_array($query_dok)) {
+
+
+$prob_kata_positif = []; $prob_kata_negatif = [];
+$kata_dok = $row_dok['tweet_preprocessing'];
+$kata_hasil = explode(' ', $kata_dok);
+
+
+
+
+
+foreach ($kata_hasil as $key) {
+  mysqli_query($koneksi, 'insert into data_testing_kata (nama_kata) values (\'' . $key . '\');');    
+
+$query_bobot_kata = mysqli_query($koneksi,"SELECT
+`nama_kata`, `bobot_bayes_positif`, `bobot_bayes_negatif` FROM
+`data_training_kata`");
+while ($row_kata = mysqli_fetch_array($query_bobot_kata)) {
+
+$katatraining = $row_kata['nama_kata'];
+
+
+
+if ($key == $katatraining) {
+$prob_kata_positif[$key] =
+round($row_kata['bobot_bayes_positif'], 8);
+$prob_kata_negatif[$key] =
+round($row_kata['bobot_bayes_negatif'], 8);
+
+foreach ($prob_kata_positif as $positif) {
+		# code...
+		     $query_simpan = mysqli_query($koneksi, "UPDATE `data_testing_kata` SET `bobot_bayes_positif` = ".$positif." WHERE `nama_kata` = '$key'");
+}
+
+foreach ($prob_kata_negatif as $negatif) {
+		# code...
+		     $query_simpan = mysqli_query($koneksi, "UPDATE `data_testing_kata` SET `bobot_bayes_negatif` = ".$negatif." WHERE `nama_kata` = '$key'");
+}
+
+
+
+
+}
+
+
+
+	# code...
+}
+
+
+}
+}
+
+
+?>
