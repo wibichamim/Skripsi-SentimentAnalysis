@@ -1,1 +1,0 @@
-SELECT COUNT(id_training) AS number FROM `data_testing` WHERE tweet_text LIKE '%toba%'

@@ -1,1 +1,0 @@
-UPDATE data_training_kata set `fh_negatif` = '0' , `fm_negatif`= '0' , `fh_positif` = '0' , `fm_positif`= '0' , `en_po`= '0', `en_ne`= '0',  `entropy_kata`= '0',  `bobot_ig`= '0'
